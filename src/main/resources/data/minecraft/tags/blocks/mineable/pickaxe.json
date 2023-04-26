@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "firststart:starting_ore",
+    "firststart:deepslate_starting_ore",
+    "firststart:starting_block"
+  ]
+}

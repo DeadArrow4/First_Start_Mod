@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "firststart:starting_block"
+    }
+  ],
+  "result": {
+    "item": "firststart:startingot",
+    "count": 9
+  }
+}

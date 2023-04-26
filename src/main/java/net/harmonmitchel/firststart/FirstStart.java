@@ -1,6 +1,10 @@
 package net.harmonmitchel.firststart;
 
 import com.mojang.logging.LogUtils;
+import net.harmonmitchel.firststart.block.ModBlocks;
+import net.harmonmitchel.firststart.item.ModItems;
+import net.harmonmitchel.firststart.world.feature.ModConfiguredFeatures;
+import net.harmonmitchel.firststart.world.feature.ModPlacedFeatures;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -24,9 +28,13 @@ public class FirstStart
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
+        ModConfiguredFeatures.register(modEventBus);
+        ModPlacedFeatures.register(modEventBus);
+
         modEventBus.addListener(this::commonSetup);
 
-        // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
 
