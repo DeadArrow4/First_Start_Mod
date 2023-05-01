@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "schithiumworks:block/schithium_generator"
+    },
+    "facing=south": {
+      "model": "schithiumworks:block/schithium_generator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "schithiumworks:block/schithium_generator",
+      "y":270
+    },
+    "facing=east": {
+      "model": "schithiumworks:block/schithium_generator",
+      "y": 90
+    }
+  }
+}

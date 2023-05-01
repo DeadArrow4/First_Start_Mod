@@ -1,8 +1,9 @@
 {
   "replace": false,
   "values": [
-    "firststart:starting_ore",
-    "firststart:deepslate_starting_ore",
-    "firststart:starting_block"
+    "schithiumworks:schithium_ore",
+    "schithiumworks:deepslate_schithium_ore",
+    "schithiumworks:schithium_block",
+    "schithiumworks:schithium_generator"
   ]
 }

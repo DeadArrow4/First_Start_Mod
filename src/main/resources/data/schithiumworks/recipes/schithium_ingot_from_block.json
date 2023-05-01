@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "schithiumworks:schithium_block"
+    }
+  ],
+  "result": {
+    "item": "schithiumworks:schithium_ingot",
+    "count": 9
+  }
+}
