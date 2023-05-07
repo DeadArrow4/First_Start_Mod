@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#x#",
+    "xcx",
+    "#x#"
+  ],
+  "key": {
+    "#": {
+      "item": "schithiumworks:schithium_ingot"
+    },
+
+    "x": {
+      "item": "minecraft:coal_block"
+    },
+
+  "c": {
+    "item": "minecraft:diamond"
+  }
+},
+  "result": {
+    "item": "schithiumworks:schithium_generator",
+    "count": 1
+  }
+}

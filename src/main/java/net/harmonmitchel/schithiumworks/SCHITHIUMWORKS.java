@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.harmonmitchel.schithiumworks.block.ModBlocks;
 import net.harmonmitchel.schithiumworks.block.entity.ModBlockEntities;
 import net.harmonmitchel.schithiumworks.item.ModItems;
+import net.harmonmitchel.schithiumworks.networking.ModMessages;
 import net.harmonmitchel.schithiumworks.screen.ModMenuTypes;
 import net.harmonmitchel.schithiumworks.screen.SchithiumGeneratorScreen;
 import net.harmonmitchel.schithiumworks.world.feature.ModConfiguredFeatures;
@@ -46,8 +47,10 @@ public class SCHITHIUMWORKS
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
+        ModMessages.register();
 
     }
+
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)

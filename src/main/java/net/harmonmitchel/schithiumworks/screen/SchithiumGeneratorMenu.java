@@ -2,6 +2,7 @@ package net.harmonmitchel.schithiumworks.screen;
 
 import net.harmonmitchel.schithiumworks.block.ModBlocks;
 import net.harmonmitchel.schithiumworks.block.entity.SchithiumGeneratorBlockEntity;
+import net.minecraft.commands.arguments.coordinates.Coordinates;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -20,7 +21,7 @@ public class SchithiumGeneratorMenu extends AbstractContainerMenu {
 
 
     public SchithiumGeneratorMenu(int id, Inventory inv, FriendlyByteBuf extraData){
-        this(id,inv,inv.player.level.getBlockEntity(extraData.readBlockPos()),new SimpleContainerData(1));
+        this(id,inv,inv.player.level.getBlockEntity(extraData.readBlockPos()),new SimpleContainerData(2));
     }
 
     public SchithiumGeneratorMenu(int id, Inventory inv, BlockEntity entity, ContainerData data){
@@ -38,6 +39,9 @@ public class SchithiumGeneratorMenu extends AbstractContainerMenu {
         });
 
         addDataSlots(data);
+    }
+    public SchithiumGeneratorBlockEntity getBlockEntity() {
+        return this.blockEntity;
     }
 
 
@@ -120,7 +124,6 @@ public class SchithiumGeneratorMenu extends AbstractContainerMenu {
             this.addSlot(new Slot(playerInventory,i,8 + i * 18,142));
         }
     }
-
 
 
 }

@@ -13,6 +13,8 @@ public class ModItems {
 
     public static final RegistryObject<Item> Schithium_Ingot = Items.register("schithium_ingot", () -> new Item(new Item.Properties().tab(ModCreativeModeTab.Schithium_Tab)));
 
+    public static final RegistryObject<Item> Schithium_Blend = Items.register("schithium_blend", () -> new Item(new Item.Properties().tab(ModCreativeModeTab.Schithium_Tab)));
+
     public static final RegistryObject<Item> Raw_Schithium = Items.register("raw_schithium", () -> new Item(new Item.Properties().tab(ModCreativeModeTab.Schithium_Tab)));
 
     public static void register(IEventBus eventBus) {

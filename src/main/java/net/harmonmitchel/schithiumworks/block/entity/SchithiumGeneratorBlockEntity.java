@@ -1,6 +1,8 @@
 package net.harmonmitchel.schithiumworks.block.entity;
 
 import net.harmonmitchel.schithiumworks.item.ModItems;
+import net.harmonmitchel.schithiumworks.networking.ModMessages;
+import net.harmonmitchel.schithiumworks.networking.packet.EnergySyncPacket;
 import net.harmonmitchel.schithiumworks.screen.SchithiumGeneratorMenu;
 import net.harmonmitchel.schithiumworks.util.ModEnergyStorage;
 import net.minecraft.core.BlockPos;
@@ -53,15 +55,17 @@ public class SchithiumGeneratorBlockEntity extends BlockEntity implements MenuPr
 
    private  LazyOptional<IEnergyStorage> LazyEnergyHandler = LazyOptional.empty();
     protected final ContainerData data;
-    private int progress = 0;
-    private int maxProgress = 78;
+    private int progress = 1;
+    private int maxProgress = 200;
 
     private final ModEnergyStorage ENERGY_STORAGE = new ModEnergyStorage(1000000, 5000) {
         @Override
         public void onEnergyChange() {
             setChanged();
+            ModMessages.sendToClients(new EnergySyncPacket(this.energy,getBlockPos()));
         }
     };
+
 
 
     public SchithiumGeneratorBlockEntity(BlockPos pos, BlockState state) {
@@ -97,6 +101,12 @@ public class SchithiumGeneratorBlockEntity extends BlockEntity implements MenuPr
     @Override
     public Component getDisplayName() {
         return Component.literal("Schithium Generator");
+    }
+    public IEnergyStorage getEnergyStorage() {
+        return ENERGY_STORAGE;
+    }
+    public void setEnergyLevel(int energy) {
+        this.ENERGY_STORAGE.setEnergy(energy);
     }
 
 
@@ -140,6 +150,7 @@ public class SchithiumGeneratorBlockEntity extends BlockEntity implements MenuPr
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory",itemHandler.serializeNBT());
+        nbt.putInt("schithium_generator.progress",this.progress);
         nbt.putInt("schithium_generator.energy", ENERGY_STORAGE.getEnergyStored());
         super.saveAdditional(nbt);
     }
@@ -147,7 +158,8 @@ public class SchithiumGeneratorBlockEntity extends BlockEntity implements MenuPr
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        itemHandler.deserializeNBT(serializeNBT().getCompound("inventory"));
+        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        progress = nbt.getInt("schithium_generator.progress");
         ENERGY_STORAGE.setEnergy(nbt.getInt("schithium_generator.energy"));
     }
     public void drops() {
@@ -160,20 +172,17 @@ public class SchithiumGeneratorBlockEntity extends BlockEntity implements MenuPr
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, SchithiumGeneratorBlockEntity pEnitiy) {
-        /*if(level.isClientSide()){
+        if(level.isClientSide()) {
             return;
-        }*/
-        if(hasSchithiumInFirstSlot(pEnitiy)){
-            pEnitiy.ENERGY_STORAGE.receiveEnergy(64,false);
         }
         if(hasSchithium(pEnitiy) && energyNotFull(pEnitiy)){
             pEnitiy.progress++;
             receiveEnergy(pEnitiy);
             setChanged(level, pos, state);
 
-            /*if (pEnitiy.progress >= pEnitiy.maxProgress){
-                craftItem(pEnitiy);
-            }*/
+            if (pEnitiy.progress >= pEnitiy.maxProgress){
+                useItem(pEnitiy);
+            }
         }
         else {
             pEnitiy.resetProgress();
@@ -182,22 +191,26 @@ public class SchithiumGeneratorBlockEntity extends BlockEntity implements MenuPr
 
     }
 
+    private static void useItem(SchithiumGeneratorBlockEntity pEnitiy) {
+        if(hasSchithium(pEnitiy)){
+            pEnitiy.itemHandler.extractItem(0,1,false);
+            pEnitiy.resetProgress();
+        }
+
+    }
+    private void resetProgress() {
+        this.progress = 0;
+    }
 
     private static void receiveEnergy(SchithiumGeneratorBlockEntity pEnitiy) {
-        pEnitiy.ENERGY_STORAGE.receiveEnergy(ENERGY_ALLOWED,false);
+        pEnitiy.ENERGY_STORAGE.receiveEnergy(64,false);
     }
 
     private static boolean hasSchithiumInFirstSlot(SchithiumGeneratorBlockEntity pEnitiy) {
         return pEnitiy.itemHandler.getStackInSlot(0).getItem() == ModItems.Schithium_Ingot.get();
     }
 
-    private void resetProgress() {
-        this.progress = 0;
-    }
 
-    /*private static void craftItem(SchithiumGeneratorBlockEntity pEnitiy) {
-
-    }*/
 
     private static boolean hasSchithium(SchithiumGeneratorBlockEntity entity) {
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
@@ -206,17 +219,17 @@ public class SchithiumGeneratorBlockEntity extends BlockEntity implements MenuPr
         }
         boolean hasSchithiumInFirstSlot = entity.itemHandler.getStackInSlot(0).getItem() == ModItems.Schithium_Ingot.get();
 
-        return hasSchithiumInFirstSlot/* && canInsertSchithium(inventory)*/;
+        return hasSchithiumInFirstSlot;
 
 
     }
 
-    /*private static boolean canInsertSchithium(SimpleContainer inventory) {
-        return inventory.getItem(1).getMaxStackSize() > inventory.getItem(1).getCount();
-    }*/
+    
 
     private static boolean energyNotFull(SchithiumGeneratorBlockEntity pEntity) {
-        return pEntity.ENERGY_STORAGE.getEnergyStored() >= ENERGY_ALLOWED;
+        return pEntity.ENERGY_STORAGE.getEnergyStored() <= ENERGY_ALLOWED;
     }
+
+
 
 }
